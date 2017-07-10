@@ -9,7 +9,7 @@ namespace BibleBrowser.Controllers
 {
     public class BaseController : Controller
     {
-        protected ILogger _logger;
+        protected readonly ILogger _logger;
         
         public BaseController(ILogger logger)
         {

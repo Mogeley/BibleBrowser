@@ -7,5 +7,13 @@ namespace EventBrowser.Domain
     /// </summary>
     public class Event
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+
+        public Event(string name)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+        }
     }
 }

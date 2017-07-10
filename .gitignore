@@ -25,6 +25,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]ogs/
+BibleBrowserTest/
 msbuild.log
 msbuild.err
 msbuild.wrn

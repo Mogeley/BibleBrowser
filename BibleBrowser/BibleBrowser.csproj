@@ -29,5 +29,8 @@
   <ItemGroup>
     <Folder Include="Views\Admin\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EventBrowser.Domain\EventBrowser.Domain.csproj" />
+  </ItemGroup>
 
 </Project>

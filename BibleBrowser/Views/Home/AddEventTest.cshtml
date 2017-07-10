@@ -1,0 +1,14 @@
+@model IEnumerable<EventBrowser.Domain.Event>
+@{
+    ViewData["Title"] = "Add Event Test";
+}
+
+<h2>Add Event Test</h2>
+
+<ul>
+    @foreach (EventBrowser.Domain.Event e in Model)
+    {
+        <li>@e.Id - @e.Name</li>
+    }
+</ul>
+

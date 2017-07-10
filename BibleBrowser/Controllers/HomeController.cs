@@ -4,13 +4,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using EventBrowser.Domain;
+using NoDb;
 
 namespace BibleBrowser.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ILogger<HomeController> logger) : base(logger)
+        private readonly IBasicCommands<Event> _eventCommands;
+        private readonly IBasicQueries<Event> _eventQueries;
+
+        public HomeController(
+            IBasicCommands<Event> eventCommands,
+            IBasicQueries<Event> eventQueries,
+            ILogger<HomeController> logger
+            ) : base(logger)
         {
+            _eventCommands = eventCommands;
+            _eventQueries = eventQueries;
         }
 
         public IActionResult Index()
@@ -18,22 +29,26 @@ namespace BibleBrowser.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult ErrorTest()
         {
             var a = 1;
             var b = 0;
             var c = a / b;
 
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult AddEventTest()
         {
-            ViewData["Message"] = "Your contact page.";
+            var eventCount = _eventQueries.GetAllAsync("BibleBrowserTest").Result.Count() + 1;
 
-            return View();
+            var e = new Event("Test Event " + eventCount.ToString());
+
+            _eventCommands.CreateAsync("BibleBrowserTest", e.Id.ToString(), e);
+
+            var events =  _eventQueries.GetAllAsync("BibleBrowserTest").Result;
+
+            return View(events);
         }
 
         public IActionResult Error()
