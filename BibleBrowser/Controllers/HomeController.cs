@@ -42,7 +42,7 @@ namespace BibleBrowser.Controllers
         {
             var eventCount = _eventQueries.GetAllAsync("BibleBrowserTest").Result.Count() + 1;
 
-            var e = new Event("Test Event " + eventCount.ToString());
+            var e = new Event($"Test Event {eventCount.ToString()}", new EventRelationship.Absolute(new ApproximateDateTime()));
 
             _eventCommands.CreateAsync("BibleBrowserTest", e.Id.ToString(), e);
 
