@@ -153,6 +153,7 @@ namespace EventBrowser.Domain
         /// <param name="months"></param>
         public void AddMonths(int months)
         {
+            // TODO: fix how negative values are handled, they do not properly fit to range 1-12...
             Month = (byte)((Month + months) % 12);
             AddYears((Month + months) / 12);
         }
