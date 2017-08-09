@@ -40,7 +40,7 @@ namespace EventBrowser.Domain
             Year = year;
             Month = ValidMonth(month);
             Day = ValidDay(day);
-            Hour = Timeline.Day.Min;
+            Hour = Timeline.Hour.Min;
         }
 
         /// <summary>
@@ -133,8 +133,19 @@ namespace EventBrowser.Domain
         /// <param name="hours"></param>
         public void AddHours(int hours)
         {
-            Hour = (byte)((Hour + hours) % 24);
-            AddDays((Hour + hours) / 24);
+            float days = (float)hours / 24f; // get days as a float
+
+            AddDays((int)days);
+            if (days != Math.Floor(days)) // do not change days if days is an integer
+            {
+                int hour = Hour + hours % 24; // converts to range 0-23
+                if (hour < 0) // negative hour add 24 and subract a day
+                {
+                    hour += 24;
+                    AddDays(-1);
+                }
+                Hour = (byte)(hour); // range 0-23
+            }
         }
         
         /// <summary>
@@ -143,8 +154,19 @@ namespace EventBrowser.Domain
         /// <param name="days"></param>
         public void AddDays(int days)
         {
-            Day = (byte)((Day + days) % 30);
-            AddMonths((Day + days) / 30);
+            float months = (float)days / 30f; // get months as a float
+
+            AddMonths((int)months);
+            if (months != Math.Floor(months)) // do not change months if months is an integer
+            {
+                int day = Day - 1 + days % 30; // converts to range 0-29
+                if (day < 0) // negative day add 30 and subract a month
+                {
+                    day += 30;
+                    AddMonths(-1);
+                }
+                Day = (byte)(day + 1); // +1 to get to range 1-30
+            }
         }
 
         /// <summary>
@@ -153,11 +175,21 @@ namespace EventBrowser.Domain
         /// <param name="months"></param>
         public void AddMonths(int months)
         {
-            // TODO: fix how negative values are handled, they do not properly fit to range 1-12...
-            Month = (byte)((Month + months) % 12);
-            AddYears((Month + months) / 12);
+            float years = (float)months / 12f; // get years as a float
+            
+            AddYears((int)years);
+            if(years != Math.Floor(years)) // do not change months if years is an integer
+            {
+                int month = Month - 1 + months % 12; // converts to range 0-11
+                if (month < 0) // negative month add 12 and subract a year
+                {
+                    month += 12;
+                    AddYears(-1);
+                }
+                Month = (byte)(month + 1); // +1 to get to range 1-12
+            }
         }
-
+        
         /// <summary>
         /// Add Years to Year
         /// </summary>
